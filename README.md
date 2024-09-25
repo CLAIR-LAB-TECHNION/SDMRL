@@ -5,7 +5,7 @@
 Technion Sequential Decision Making and Reinforcement Learning (Fall 2024-2025)
   <br>
   <br>
-  <img src="https://jingjingrenabc.github.io/ultrapixel/images/laion2B-en-aesthetic-M000137_0106603082.jpg?raw=true">
+  <img src="https://jingjingrenabc.github.io/ultrapixel/images/55pick_23.jpg?raw=true">
 </h1>
   <p align ="center">
     <a href="mailto:sarahk@cs.technion.ac.il">Sarah Keren</a> 
