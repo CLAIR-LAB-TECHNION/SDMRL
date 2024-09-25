@@ -2,8 +2,7 @@
 
 <h1 align="center">
   <br>
-Technion Sequential Decision Making and Reinforcement Learning (Fall 2024-2025)
-  <br>
+ Sequential Decision Making and Reinforcement Learning
   <br>
   <img src="https://jingjingrenabc.github.io/ultrapixel/images/55pick_23.jpg?raw=true">
 </h1>
