@@ -5,7 +5,7 @@
 Technion Sequential Decision Making and Reinforcement Learning (Fall 2024-2025)
   <br>
   <br>
-  <img src="https://jingjingrenabc.github.io/ultrapixel/images/pick_1745.jpg?raw=true">
+  <img src="https://jingjingrenabc.github.io/ultrapixel/images/laion2B-en-aesthetic-M000137_0106603082.jpg?raw=true">
 </h1>
   <p align ="center">
     <a href="mailto:sarahk@cs.technion.ac.il">Sarah Keren</a> 
@@ -43,8 +43,14 @@ Jupyter Notebook tutorials for the Technion's CS 236018 course Sequential Decisi
 |`tutorials//notebooks/Tools_tutorial/Gymnasium.ipynb`| Using Gymnasium for creating and interacting with reinforcement learning environments, including setting up environments, running simulations, and implementing agents.|
 |`tutorials//notebooks/Tools_tutorial/PettingZooDemo.ipynb`| Demonstration of the PettingZoo library for multi-agent reinforcement learning, covering environment setup, interaction, and agent implementation.|
 |`tutorials//notebooks/Tools_tutorial/StableBaselines.ipynb`| Overview of the Stable Baselines3 library for reinforcement learning, covering setup, training, and evaluation of RL models.|
-<!-- |`pytorch_maximize_cpu_gpu_utilization.ipynb/pdf`|Tips and Tricks for efficient coding in PyTorch, Maximizing the CPU and GPU utilization, `nvidia-smi`, PyTorch Profiler, AMP, Multi-GPU training, HF Accelerate, RL libraries| -->
-
+|`tutorials/notebooks/Imitation-learning_tutorial`| Tutorials on imitation learning techniques.|
+|`tutorials/notebooks/Planning_tutorial`| Tutorials on planning algorithms in reinforcement learning.|
+|`tutorials/notebooks/Policy-Gradient_tutorial`| Tutorials on policy gradient methods in reinforcement learning.|
+|`tutorials/notebooks/Value-Based_tutorial`| Tutorials on value-based methods in reinforcement learning.|
+|`tutorials/notebooks/DQN_tutorial`| Tutorials on Deep Q-Networks (DQN) in reinforcement learning.|
+|`tutorials/notebooks/Actor-Critic_tutorial`| Tutorials on Actor-Critic methods in reinforcement learning.|
+|`tutorials/notebooks/Model-Based_tutorial`| Tutorials on model-based reinforcement learning methods.|
+|`tutorials/notebooks/MARL_tutorial`| Tutorials on Multi-Agent Reinforcement Learning (MARL).|
 
 ## Running The Notebooks
 You can view the tutorials online or download and run locally.
