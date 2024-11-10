@@ -1,7 +1,6 @@
 # SDMRL
 
 <h1 align="center">
-  <br>
  Sequential Decision Making and Reinforcement Learning
   <br>
 
@@ -24,7 +23,7 @@ Jupyter Notebook tutorials for the Technion's CS 236018 course Sequential Decisi
 </h4>
 
 
-- [CLAI](#CLAI)
+- [SDMRL](#SDMRL)
   * [Agenda](#agenda)
   * [Running The Notebooks](#running-the-notebooks)
     + [Running Online](#running-online)
