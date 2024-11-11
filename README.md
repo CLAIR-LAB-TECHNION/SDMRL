@@ -17,6 +17,9 @@
 
 Jupyter Notebook tutorials for the Technion's CS 236018 course Sequential Decision Making and Reinforcement Learning
 
+<p><strong>Note:</strong> This course is listed under the name <em>Collaborative AI</em> in the registration system due to administrative issues. However, the course content, structure, and objectives remain aligned with <em>Sequential Decision Making and Reinforcement Learning</em>.</p>
+
+
 <h4 align="center">
     <a href="https://colab.research.google.com/github/CLAIR-LAB-TECHNION/SDMRL"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
     <a href="https://nbviewer.org/github/CLAIR-LAB-TECHNION/SDMRL/tree/main/tutorials/"><img src="https://github.com/CLAIR-LAB-TECHNION/SDMRL/blob/main/tutorials/assets/nbviewer_badge.svg" alt="Open In NBViewer"/></a>
