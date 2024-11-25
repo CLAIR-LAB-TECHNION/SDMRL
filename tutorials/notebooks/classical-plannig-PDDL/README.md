@@ -4,7 +4,7 @@ Welcome to the Classic Plannig and PDDL Tutorial
 <br>
 <br>
 
-<img src="https://ideogram.ai/assets/image/lossless/response/GtAnhHm-TFGFwYDI95BuCg?raw=true">
+<img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*qOG5tne2c4UMbWVpUVDurQ.png?raw=true">
 
 
 ## Setup
