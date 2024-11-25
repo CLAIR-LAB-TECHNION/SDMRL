@@ -1,0 +1,163 @@
+[
+  {
+    "objectID": "classical-planning.html#sequential-decision-making",
+    "href": "classical-planning.html#sequential-decision-making",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Sequential Decision Making",
+    "text": "Sequential Decision Making\nThe decision made at a given time will be followed by other decision and therefor the decision maker has to consider the implications of his decision on subsequent decisions.\n\nconsider long term effect of the actions. trading off immediate rewards with long term gains."
+  },
+  {
+    "objectID": "classical-planning.html#what-is-classical-planning",
+    "href": "classical-planning.html#what-is-classical-planning",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "What is Classical Planning?",
+    "text": "What is Classical Planning?\n\nFinding a sequence of actions that transitions an agent from an initial state to a goal state.\nCharacteristics:\n\nFully observable: The agent has complete knowledge of the state.\nDeterministic: The outcomes of actions are predictable.\nFinite: The problem has a finite set of states and actions.\n\nChallenges:\n\nLarge state spaces.\nEfficient representation and search.\n\n\n\nplanning - the model is known."
+  },
+  {
+    "objectID": "classical-planning.html#classical-planning---mathematical-model",
+    "href": "classical-planning.html#classical-planning---mathematical-model",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Classical planning - Mathematical model",
+    "text": "Classical planning - Mathematical model\n\n\\(S\\): A finite set of states.\n\\(A\\): A finite set of actions.\n\\(T: S \\times A \\to S\\): Transition function mapping a state and action to a successor state.\n\\(I \\subseteq S\\): Initial state(s).\n\\(G \\subseteq S\\): Goal states.\n\nObjective:\nFind a sequence of actions \\(\\pi = [a_1, a_2, \\dots, a_n]\\) such that applying \\(\\pi\\) transitions the agent from \\(I\\) to a state \\(s \\in G\\).\n\nClassical planning is a deterministic decision-making framework.\n- All components (\\(S\\), \\(A\\), \\(T\\), \\(I\\), \\(G\\)) are predefined and known.\n- Time is treated as discrete, broken into predefined decision epochs (e.g., seconds, months).\n- Cost (\\(C\\)) is not always explicitly included in classical planning, but when it is, the objective typically involves minimizing it alongside achieving the goal state.\n- It’s worth noting that this is one possible model. For instance, MDPs are another model that allows probabilistic transitions."
+  },
+  {
+    "objectID": "classical-planning.html#what-is-pddl",
+    "href": "classical-planning.html#what-is-pddl",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "What is PDDL?",
+    "text": "What is PDDL?\n\nDefinition: A standardized language for encoding classical planning problems.\nOrigin: Developed to unify different planning systems and research efforts.\nPurpose:\n\nProvides a structured way to define the problem.\nAllows interoperability between planners.\n\nCore Concepts:\n\nAbstract representation of objects, states, and actions.\nClear separation of domain knowledge (rules) and problem specifics (instances).\n\n\n\nPDDL (Planning Domain Definition Language) is a language to describe classical planning problems within the mathematical model.\n- While the foundational version of PDDL didn’t include costs, extensions (e.g., PDDL2.1) introduced features for action costs and numeric fluents, allowing cost-based planning.\n- PDDL focuses on encoding both the domain (rules and actions) and specific instances (objects and goals) in a structured and interpretable way.\n- It plays a crucial role in enabling the use of diverse planners by providing a standardized format."
+  },
+  {
+    "objectID": "classical-planning.html#components-of-a-pddl-task---objects",
+    "href": "classical-planning.html#components-of-a-pddl-task---objects",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Components of a PDDL Task - Objects",
+    "text": "Components of a PDDL Task - Objects\n\nEntities of interest in the domain.\nExample: rooma, roomb, ball1, ball2, left-arm, right-arm.\n\n\nObjects are the building blocks of a PDDL domain and problem definition.\n- These represent the entities that exist in the environment and can be acted upon.\n- Each object must be explicitly listed in the PDDL problem file under the :objects section.\n- The objects often include physical items, locations, or agents, depending on the task.\n- While objects are central, they are abstract identifiers—they don’t have intrinsic properties until linked with predicates."
+  },
+  {
+    "objectID": "classical-planning.html#components-of-a-pddl-task---predicates",
+    "href": "classical-planning.html#components-of-a-pddl-task---predicates",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Components of a PDDL Task - Predicates",
+    "text": "Components of a PDDL Task - Predicates\n\nLogical statements describing properties or relationships.\nExample:\n\n(ROOM rooma): True if rooma is a room.\n(at-robot rooma): True if the robot is in rooma.\n\n\n\nPredicates define the relationships or properties of objects in the domain.\n- They serve as the foundation for describing the state of the environment.\n- For instance, (ROOM rooma) might indicate that rooma is classified as a room, while (at-robot rooma) specifies that the robot is currently located in rooma.\n- These predicates are crucial for defining the initial state and goals, as they form the vocabulary for describing the world.\n- Predicates are declared in the PDDL domain file under the :predicates section and can be combined with logical operators in the problem file to form conditions.\n- It’s important to remember that predicates are binary (true/false); they don’t carry additional numeric or descriptive data."
+  },
+  {
+    "objectID": "classical-planning.html#components-of-a-pddl-task---initial-state",
+    "href": "classical-planning.html#components-of-a-pddl-task---initial-state",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Components of a PDDL Task - Initial State",
+    "text": "Components of a PDDL Task - Initial State\n\nA snapshot of the world at the start.\nExample: (at-robot rooma), (at-ball ball1 rooma).\n\n\nThe initial state describes the starting configuration of the world.\n- It specifies which predicates are true at the beginning of the problem.\n- For example, (at-robot rooma) indicates that the robot is in rooma at the start, and (at-ball ball1 rooma) means that ball1 is also in rooma.\n- This snapshot of the world is defined in the :init section of the PDDL problem file.\n- Any predicates not listed in the :init section are implicitly assumed to be false."
+  },
+  {
+    "objectID": "classical-planning.html#components-of-a-pddl-task---goal-specification",
+    "href": "classical-planning.html#components-of-a-pddl-task---goal-specification",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Components of a PDDL Task - Goal Specification",
+    "text": "Components of a PDDL Task - Goal Specification\n\nLogical conditions that must be satisfied in the final state.\nExample: (at-ball ball1 roomb) and (at-ball ball2 roomb).\n\n\nThe goal specification defines the conditions that need to be satisfied in the final state.\n- In PDDL, goals are typically expressed as logical formulas using the predicates defined earlier.\n- For instance, (at-ball ball1 roomb) and (at-ball ball2 roomb) specify that both ball1 and ball2 must be in roomb for the task to be complete.\n- The goal is declared in the :goal section of the PDDL problem file.\n- Goals can include conjunctions (AND), disjunctions (OR), and even more complex conditions if supported by the PDDL version.\n- Planners use this specification to search for an action sequence that transitions the world from the initial state to a state where the goal conditions are true."
+  },
+  {
+    "objectID": "classical-planning.html#components-of-a-pddl-task---actions",
+    "href": "classical-planning.html#components-of-a-pddl-task---actions",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Components of a PDDL Task - Actions",
+    "text": "Components of a PDDL Task - Actions\n\nDefined with:\n\nPreconditions: Conditions that must hold for the action to be valid.\nEffects: Changes caused by the action.\n\nExample:\n\nAction: move-robot\n\nPreconditions: (at-robot rooma) and (ROOM roomb)\nEffects: (not (at-robot rooma)) and (at-robot roomb)\n\n\n\n\nActions are the dynamic components of a PDDL task.\n- Each action is defined with two main parts:\n- Preconditions: These describe the logical conditions that must be true in the current state for the action to be executed.\nFor example, the move-robot action requires that the robot is in rooma and that roomb is a valid room.\n- Effects: These describe the changes the action makes to the environment.\nFor instance, the move-robot action removes the fact (at-robot rooma) and adds (at-robot roomb).\n- Actions are declared in the PDDL domain file under the :action section.\n- By defining preconditions and effects, PDDL ensures that planners can evaluate the feasibility of actions and compute their impact on the state."
+  },
+  {
+    "objectID": "classical-planning.html#how-to-put-the-pieces-together",
+    "href": "classical-planning.html#how-to-put-the-pieces-together",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "How to Put the Pieces Together",
+    "text": "How to Put the Pieces Together\nPlanning tasks specified in PDDL are separated into two files:\n\nA domain file for predicates and actions.\nA problem file for objects, initial state and goal specification."
+  },
+  {
+    "objectID": "classical-planning.html#running-example---gripper-task",
+    "href": "classical-planning.html#running-example---gripper-task",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Running Example - Gripper task",
+    "text": "Running Example - Gripper task\nGripper task with four balls: There is a robot that can move between two rooms and pick up or drop balls with either of his two arms. Initially, all balls and the robot are in the first room. We want the balls to be in the second room."
+  },
+  {
+    "objectID": "classical-planning.html#gripper-task-objects",
+    "href": "classical-planning.html#gripper-task-objects",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Gripper task: Objects",
+    "text": "Gripper task: Objects"
+  },
+  {
+    "objectID": "classical-planning.html#gripper-task-predicates",
+    "href": "classical-planning.html#gripper-task-predicates",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Gripper task: Predicates",
+    "text": "Gripper task: Predicates"
+  },
+  {
+    "objectID": "classical-planning.html#gripper-task-initial-state",
+    "href": "classical-planning.html#gripper-task-initial-state",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Gripper task: Initial state",
+    "text": "Gripper task: Initial state"
+  },
+  {
+    "objectID": "classical-planning.html#gripper-task-goal-specification",
+    "href": "classical-planning.html#gripper-task-goal-specification",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Gripper task: Goal specification",
+    "text": "Gripper task: Goal specification"
+  },
+  {
+    "objectID": "classical-planning.html#gripper-task-movement-operator",
+    "href": "classical-planning.html#gripper-task-movement-operator",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Gripper task: Movement operator",
+    "text": "Gripper task: Movement operator"
+  },
+  {
+    "objectID": "classical-planning.html#gripper-task-pick-up-operator",
+    "href": "classical-planning.html#gripper-task-pick-up-operator",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Gripper task: Pick-up operator",
+    "text": "Gripper task: Pick-up operator"
+  },
+  {
+    "objectID": "classical-planning.html#gripper-task-drop-operator",
+    "href": "classical-planning.html#gripper-task-drop-operator",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Gripper task: Drop operator",
+    "text": "Gripper task: Drop operator"
+  },
+  {
+    "objectID": "classical-planning.html#blocks-world",
+    "href": "classical-planning.html#blocks-world",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Blocks World",
+    "text": "Blocks World\n\n\nTask 1 in the notebook"
+  },
+  {
+    "objectID": "classical-planning.html#connection-to-mdps",
+    "href": "classical-planning.html#connection-to-mdps",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Connection to MDPs",
+    "text": "Connection to MDPs\nAn MDP is defined as a tuple: \\(M = (S, A, P, R, \\gamma)\\)\nClassical Planning as a Special Case of MDPs:\n\n\nTransition probabilities \\(P(s' | s, a)\\) are deterministic (\\(0\\) or \\(1\\)).\nNo reward function (\\(R\\)); focus is on reaching goal states.\nPlanning objectives correspond to solving deterministic, goal-oriented MDPs."
+  },
+  {
+    "objectID": "classical-planning.html#planning",
+    "href": "classical-planning.html#planning",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Planning",
+    "text": "Planning\n\nRelies on a domain model that explicitly defines states, actions, and transitions.\nGoal-oriented: Focuses on generating a solution for a well-defined task.\nIndependent of data: Does not require trial-and-error interaction.\nExample: Solving a logistics problem with predefined routes and tasks."
+  },
+  {
+    "objectID": "classical-planning.html#learning",
+    "href": "classical-planning.html#learning",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Learning",
+    "text": "Learning\n\nUses data or interaction to improve behavior or estimate the model.\nTypically focuses on policy optimization or estimating action outcomes.\nExample: Reinforcement learning for navigating an unknown environment."
+  },
+  {
+    "objectID": "classical-planning.html#comparison-table",
+    "href": "classical-planning.html#comparison-table",
+    "title": "Introduction to Classical Planning and PDDL",
+    "section": "Comparison Table",
+    "text": "Comparison Table\n\n\n\n\n\n\n\n\nAspect\nPlanning\nLearning\n\n\n\n\nInput\nModel\nData/Interaction\n\n\nOutput\nPlan\nLearned Policy\n\n\nScope\nWell-defined tasks\nAdapts to unknown environments"
+  }
+]

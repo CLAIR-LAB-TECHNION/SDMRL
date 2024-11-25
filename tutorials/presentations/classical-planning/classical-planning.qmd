@@ -1,0 +1,271 @@
+---
+title: "Introduction to Classical Planning and PDDL"
+author: "Itay Segev"
+format:
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    logo: https://github.com/CLAIR-LAB-TECHNION/SDMRL/blob/main/tutorials/assets/CLAIR_logo.png?raw=true
+    css: style.css
+
+--- 
+
+## Sequential Decision Making
+
+The decision made at a given time will be followed by other decision and therefor the decision maker has to consider the implications of his decision on subsequent decisions.
+
+::: {.notes}
+consider long term effect of the actions.
+trading off immediate rewards with long term gains.
+:::
+
+## What is Classical Planning?
+
+- Finding a sequence of actions that transitions an agent from an initial state to a goal state.
+- **Characteristics**:
+  - Fully observable: The agent has complete knowledge of the state.
+  - Deterministic: The outcomes of actions are predictable.
+  - Finite: The problem has a finite set of states and actions.
+- **Challenges**:
+  - Large state spaces.
+  - Efficient representation and search.
+
+::: {.notes}
+planning - the model is known.
+:::
+
+---
+
+## Classical planning - Mathematical model
+ 
+* $S$: A finite set of states.
+* $A$: A finite set of actions.
+* $T: S \times A \to S$: Transition function mapping a state and action to a successor state.
+* $I \subseteq S$: Initial state(s).
+* $G \subseteq S$: Goal states.
+
+**Objective**:  
+Find a sequence of actions $\pi = [a_1, a_2, \dots, a_n]$ such that applying $\pi$ transitions the agent from $I$ to a state $s \in G$.
+
+::: {.notes}
+Classical planning is a deterministic decision-making framework.  
+- All components ($S$, $A$, $T$, $I$, $G$) are predefined and known.  
+- Time is treated as discrete, broken into predefined decision epochs (e.g., seconds, months).  
+- Cost ($C$) is not always explicitly included in classical planning, but when it is, the objective typically involves minimizing it alongside achieving the goal state.  
+- It's worth noting that this is one possible model. For instance, MDPs are another model that allows probabilistic transitions.  
+
+:::
+
+---
+
+## What is PDDL?
+
+- **Definition**: A standardized language for encoding classical planning problems.
+- **Origin**: Developed to unify different planning systems and research efforts.
+- **Purpose**:
+  - Provides a structured way to define the problem.
+  - Allows interoperability between planners.
+- **Core Concepts**:
+  - Abstract representation of objects, states, and actions.
+  - Clear separation of domain knowledge (rules) and problem specifics (instances).
+
+::: {.notes}
+PDDL (Planning Domain Definition Language) is a language to describe classical planning problems within the mathematical model.  
+- While the foundational version of PDDL didn't include costs, extensions (e.g., PDDL2.1) introduced features for action costs and numeric fluents, allowing cost-based planning.  
+- PDDL focuses on encoding both the domain (rules and actions) and specific instances (objects and goals) in a structured and interpretable way.  
+- It plays a crucial role in enabling the use of diverse planners by providing a standardized format.  
+:::
+
+---
+
+## Components of a PDDL Task - Objects
+
+- Entities of interest in the domain.
+- Example: `rooma`, `roomb`, `ball1`, `ball2`, `left-arm`, `right-arm`.
+
+::: {.notes}
+Objects are the building blocks of a PDDL domain and problem definition.  
+- These represent the entities that exist in the environment and can be acted upon.  
+- Each object must be explicitly listed in the PDDL problem file under the `:objects` section.  
+- The objects often include physical items, locations, or agents, depending on the task.  
+- While objects are central, they are abstract identifiers—they don't have intrinsic properties until linked with predicates.  
+:::
+
+---
+
+## Components of a PDDL Task - Predicates
+
+- Logical statements describing properties or relationships.
+- Example:
+  - `(ROOM rooma)`: True if `rooma` is a room.
+  - `(at-robot rooma)`: True if the robot is in `rooma`.
+
+::: {.notes}
+Predicates define the relationships or properties of objects in the domain.  
+- They serve as the foundation for describing the state of the environment.  
+- For instance, `(ROOM rooma)` might indicate that `rooma` is classified as a room, while `(at-robot rooma)` specifies that the robot is currently located in `rooma`.  
+- These predicates are crucial for defining the initial state and goals, as they form the vocabulary for describing the world.  
+- Predicates are declared in the PDDL domain file under the `:predicates` section and can be combined with logical operators in the problem file to form conditions.  
+- It's important to remember that predicates are binary (true/false); they don't carry additional numeric or descriptive data.  
+:::
+
+---
+
+## Components of a PDDL Task - Initial State
+
+- A snapshot of the world at the start.
+- Example: `(at-robot rooma)`, `(at-ball ball1 rooma)`.
+
+::: {.notes}
+The initial state describes the starting configuration of the world.  
+- It specifies which predicates are true at the beginning of the problem.  
+- For example, `(at-robot rooma)` indicates that the robot is in `rooma` at the start, and `(at-ball ball1 rooma)` means that `ball1` is also in `rooma`.  
+- This snapshot of the world is defined in the `:init` section of the PDDL problem file.  
+- Any predicates not listed in the `:init` section are implicitly assumed to be false.  
+:::
+
+---
+
+## Components of a PDDL Task - Goal Specification
+
+- Logical conditions that must be satisfied in the final state.
+- Example: `(at-ball ball1 roomb)` and `(at-ball ball2 roomb)`.
+
+::: {.notes}
+The goal specification defines the conditions that need to be satisfied in the final state.  
+- In PDDL, goals are typically expressed as logical formulas using the predicates defined earlier.  
+- For instance, `(at-ball ball1 roomb)` and `(at-ball ball2 roomb)` specify that both `ball1` and `ball2` must be in `roomb` for the task to be complete.  
+- The goal is declared in the `:goal` section of the PDDL problem file.  
+- Goals can include conjunctions (AND), disjunctions (OR), and even more complex conditions if supported by the PDDL version.  
+- Planners use this specification to search for an action sequence that transitions the world from the initial state to a state where the goal conditions are true.  
+:::
+
+## Components of a PDDL Task - Actions
+
+- Defined with:
+  - **Preconditions**: Conditions that must hold for the action to be valid.
+  - **Effects**: Changes caused by the action.
+
+- Example:
+  - Action: `move-robot`
+    - Preconditions: `(at-robot rooma)` and `(ROOM roomb)`
+    - Effects: `(not (at-robot rooma))` and `(at-robot roomb)`
+
+::: {.notes}
+Actions are the dynamic components of a PDDL task.  
+- Each action is defined with two main parts:  
+  - **Preconditions**: These describe the logical conditions that must be true in the current state for the action to be executed.  
+    For example, the `move-robot` action requires that the robot is in `rooma` and that `roomb` is a valid room.  
+  - **Effects**: These describe the changes the action makes to the environment.  
+    For instance, the `move-robot` action removes the fact `(at-robot rooma)` and adds `(at-robot roomb)`.  
+- Actions are declared in the PDDL domain file under the `:action` section.  
+- By defining preconditions and effects, PDDL ensures that planners can evaluate the feasibility of actions and compute their impact on the state.  
+:::
+---
+
+## How to Put the Pieces Together
+
+Planning tasks specified in PDDL are separated into two files:
+
+- A [domain file](https://github.com/SoarGroup/Domains-Planning-Domain-Definition-Language/blob/master/pddl/gripper.pddl){preview-link="true"} for predicates and actions.
+- A [problem file](https://github.com/SoarGroup/Domains-Planning-Domain-Definition-Language/blob/master/pddl/gripper-4.pddl){preview-link="true"} for objects, initial state and goal specification.
+
+
+
+## Running Example - Gripper task
+
+**Gripper** task with four balls: There is a robot that can move between two rooms and pick up or drop balls with either of his two arms.
+Initially, all balls and the robot are in the first room. We want the balls to be in the second room.
+
+## Gripper task: Objects
+
+![](images/objects.png){.absolute .fragment}
+
+---
+
+## Gripper task: Predicates
+
+![](images/predicates.png){.absolute .fragment}
+
+---
+
+## Gripper task: Initial state
+
+![](images/initial_state.png){.absolute .fragment}
+
+---
+
+
+## Gripper task: Goal specification
+
+![](images/goal.png){.absolute .fragment}
+
+---
+
+## Gripper task: Movement operator
+
+![](images/mov_operator.png){.absolute .fragment}
+
+---
+
+## Gripper task: Pick-up operator
+
+![](images/pickup_operator.png){.absolute .fragment}
+
+---
+
+## Gripper task: Drop operator
+
+![](images/drop_operator.png){.absolute .fragment}
+
+---
+
+## Blocks World
+
+![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*kWu3vlZf3IZzZ32lImunVQ.png){.absolute}
+
+::: {.notes}
+Task 1 in the notebook 
+:::
+
+---
+
+## Connection to MDPs
+
+An **MDP** is defined as a tuple: $M = (S, A, P, R, \gamma)$
+
+**Classical Planning as a Special Case of MDPs**:
+
+::: incremental
+- Transition probabilities $P(s' | s, a)$ are deterministic ($0$ or $1$).
+- No reward function ($R$); focus is on reaching goal states.
+- Planning objectives correspond to solving deterministic, goal-oriented MDPs.
+:::
+
+---
+
+## Planning
+- Relies on a **domain model** that explicitly defines states, actions, and transitions.
+- Goal-oriented: Focuses on generating a solution for a well-defined task.
+- Independent of data: Does not require trial-and-error interaction.
+- Example: Solving a logistics problem with predefined routes and tasks.
+
+## Learning
+- Uses **data** or interaction to improve behavior or estimate the model.
+- Typically focuses on **policy optimization** or estimating action outcomes.
+- Example: Reinforcement learning for navigating an unknown environment.
+
+---
+
+## Comparison Table
+| Aspect       | Planning                          | Learning                          |
+|--------------|-----------------------------------|-----------------------------------|
+| Input        | Model                             | Data/Interaction                  |
+| Output       | Plan                              | Learned Policy                    |
+| Scope        | Well-defined tasks               | Adapts to unknown environments    |
+
+---
+
+
