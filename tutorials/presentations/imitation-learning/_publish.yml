@@ -1,0 +1,4 @@
+- source: imitation-learning.qmd
+  quarto-pub:
+    - id: f3c82a61-f8ba-4f65-84c5-dbd7fb332dfc
+      url: https://itaysegev.quarto.pub/imitation-learning

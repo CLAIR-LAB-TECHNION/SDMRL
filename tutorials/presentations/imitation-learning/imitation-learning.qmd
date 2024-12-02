@@ -1,0 +1,202 @@
+---
+title: "Imitation Learning"
+author: "Itay Segev"
+format:   
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    logo: https://github.com/CLAIR-LAB-TECHNION/SDMRL/blob/main/tutorials/assets/CLAIR_logo.png?raw=true
+    css: style.css
+
+--- 
+
+## Supervised Learning of Behaviors
+
+![](https://upload.wikimedia.org/wikipedia/commons/1/1f/Makak_neonatal_imitation.png?1648499532601){.absolute}
+
+::: {.notes}
+Today we’ll explore how we can use supervised learning techniques to teach
+an agent to perform tasks based on observed data. This is the might be the most naive approach when coming to solve our problem. We’ll start by introducing some key terminology and notation move to explain the basic algorithm and than you will have some time to go over the notebook. And finely we’ll get back to the presentation
+to speak about the problems in the system and what can be done to overcome some of them.
+Way of learning by imitating an expert.
+:::
+
+## Supervised Learning of Behaviors
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut03_tiger_example.png?raw=true){.absolute}
+
+::: {.notes}
+in supervised learning we often deal with mapping from inputs to outputs. For example in
+image classification, we have a dataset of image and their labels. So if I want to use the same method in here. What will be my dataset? I remind you that my goal is to find a policy which is a mapping from states to action. Our policy could be stochastic. Classifier is in some way a mapping between an image to probability of each class. In this example our observations/ state is a the tiger situation, as we said is a collection of feature and we want to choose based on that the action to take. It could be continuous or discrete.
+:::
+
+---
+
+## Terminology & Notation
+
+![](images/obs_state.png){.absolute}
+
+::: {.notes}
+Important note about the distinction between state and observations. The state is complete description of the world in a given time. While observation is what the agent perceived. For example a state could contain the speed and position of the cheeta while observation contain an image from a camera. We would use them simultaneously, but in some cases the distinction between them is improtent. 
+
+:::
+
+---
+
+## Behavioral Cloning
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut03_autonuoms_driving.png?raw=true){.absolute}
+
+::: {.notes}
+What is our goal? Learn policies using supervised learning.
+Let’s take a look on the example of autonomous driving. What are the observations? Image
+from car camera.
+What could be the state in this example? What are the actions? Steering command
+turn right, left, etc... so what is our dataset? How can we collect it? What we”ve described is the simplest algorithm that is called behavior cloning. 
+
+:::
+
+---
+
+## Does it work? 
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut03_trajectories.png?raw=true){.absolute .fragment}
+
+::: {.notes}
+Notebook hands-on  - up to Challenges in Behavioral Cloning
+
+4: does it work? No. In supervised learning we assume our samples our IID. But that is not the case in our situation. What is means is that we have a compounding error situation. Small mistake by the policy can lead to state that are different from the training data - because of the dependent. Causing the policy to make larger mistakes over time.
+:::
+
+---
+
+## Distributional Shift
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut03_distributional_shift.png?raw=true){.absolute}
+
+::: {.notes}
+let’s formalize it a bit. When training a policy we typically use human
+expert generated dataset. Which we denote as P data. However the policy itself generates a different distribution over observations. Denoted as P pi. These are not the same, because the policy doesn’t drive exactly like a human - no model is perfect. This difference is what called distributional shift. The
+policy’s mistakes lead to different states than those seen during training. The model does not know how to rally from mistakes. 
+:::
+
+---
+
+## Does it work? 
+    
+{{< video https://www.youtube.com/watch?v=qhUvQiKec2U&t=70s width="100%" height="85%" >}}
+    
+::: {.notes}
+Does it work? So in practice the answer is yes.
+We can address the problem in a fw ways:
+- Be smart about how we collect (and augment) our data.
+- Use very powerful models that make very few mistakes.
+- Use multi-task learning.
+- Change the algorithm (DAgger).
+:::
+
+---
+
+## Data Augmentation Strategies    
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut03_nvidia_example.png?raw=true){.absolute}
+
+::: {.notes}
+Let’s take a look on some ways and examples of dealing with behavior cloning problems. So one strategy is introduce mistakes during data collection and record the expert!s reaction. This ensures that the training data includes a diverse set of states including those that the policy might encounter due to its own mistakes. The dataset  includes mistakes and correction, the policy learn how to recover from errors. Adding mistakes during data collection or using data augmentations - modifying existing data. In the context of self driving cars, side facing cameras can provide alternative perspective, simulating off- center positions that the car might need to correct.
+:::
+
+---
+
+## Drone Flying Through Forests Using Camera Data Augmentation
+    
+{{< video https://www.youtube.com/watch?v=umRdt3zGgpU&t=104s width="100%" height="85%" start="104" >}}
+    
+::: {.notes}
+An illustrative example of this come from a study where drones were trained to navigate
+through forest. The research mounted cameras on a hat worn by a person walking through the forest.The left facing was labeled with the action to go right ... this simple augmentation provide diverse training data enable the drone to learn corrrective actions. We basically use our knowledge domain to create additional data. And as you can see practical example that works pretty well.
+:::
+
+---
+
+## Non-Markovian Behavior
+
+Non-Markovian behavior refers to situations where the expert’s actions depend on the history of observations, not just the current state.
+
+- **Temporal Dependencies:** Recognizing and incorporating temporal dependencies is essential for tasks with non-Markovian behavior.
+- **Sequence Models:** Using models like LSTMs or Transformers can help capture these dependencies.
+- **Causal Relationships:** Avoiding causal confusion by ensuring the policy learns true causal relationships is critical.
+
+::: {.notes}
+Another problem is Non markovian behavior. I remind you that we assumed markovian
+behavior through our model. That comes into practice in our policy that is only dependent on the current state. But human behavior often depends on the entire history of observation, not just the current state. So our policy can fail to capture this. Suboptimal performance it the tasks inherently requires memory of past event. How can we address this? We can build models that incorporate a
+history of observation. Models like LSTM or transformer can process sequences of observations and learn to make decisions based on the entire sequence.
+:::
+
+---
+
+## Multimodal Behavior
+
+Where multiple actions are valid for the same state leading to a complex distribution of possible actions
+
+Solutions:
+
+- **Mixture of Gaussians:** 
+
+- **Latent Variable Models:** 
+
+- **Diffusion Models:** 
+
+::: {.notes}
+Where multiple actions are valid for the same state leading to a complex distribution of possible actions. For example a drone can fly around a tree to the left or right.
+If the training data includes both actions a simple model might average them, leading to poor
+performance. We might struggle to learn a single coherent action strategy.
+Solutions: we will discribe them very shortly, search for more information if you want.
+Mixture of Gaussian- a simple yet affective, modeling the action distribution as a combination of
+Gaussians, the neural network outputs multiple means, variance and weights allowing to capture the
+multimodal nature of the actions.
+Latent variable models - these models introduce an additional random variable as input, which help
+capture different modes. The model learns to generate different modes by conditioning on this latent
+variable. Not enough information......
+Diffusion models- recently popularized in image generation, can also be used to imitation learning.
+These models add noise to actions during training and teach the network to denoise them. This
+process can capture complex distribution, enabling the policy to represent multiple valid actions for a given state.
+:::
+
+
+## 
+
+{{< video https://www.youtube.com/watch?v=w-CGSQAO5-Q&t=45s width="100%" height="100%" start="42" >}}
+
+
+
+
+## Multi-Task Learning
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut03_multi_tasks_learning.png?raw=true){.absolute}
+
+::: {.notes}
+Multi task learning. The idea here is to collect data for multiple destinations and train a policy that receive the desired location as an input. This exposes the agent to a broader range of states, making it more robust. Get more varied training data.
+:::
+
+---
+
+## DAgger
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut03_DAgger.png?raw=true){.absolute}
+
+::: {.notes}
+Dagger is a different algorithm iterative one that try to be clever about P data. The first step is to train a model on the expert demonstration- behavior cloning. The second step is to run that policy and collect new observations - we collect our data from P expert and by that we decrease the distributional shift. Next we ask human to label those. We add that to our dataset and repeat the process until the policy converge. The challenge is of course laying in step 3 - very expensive or unsafe.
+:::
+
+---
+
+## 
+
+![](https://solportal.ibe-unesco.org/wp-content/uploads/2019/09/Imitation-1.jpg){.absolute}
+
+::: {.notes}
+Summery: By that we finish talking about imitation learning. I hope I convince you why we have to use different learning mechanisms rather than supervised learning, to learn decision making for task performing. Next week we’ll start discussing RL, which also take Inspiration from how humans learn but instead of learning by imitating an expert we are going to learn by applying actions on the environment and observing the results of it.
+:::
+---
