@@ -5,7 +5,7 @@ import numpy as np
 import sys
 from tqdm.auto import tqdm
 
-from cs236203.infrastructure import pytorch_util as ptu
+from cs236018.infrastructure import pytorch_util as ptu
 
 
 def sample_trajectory(env, policy, max_path_length, render=False):

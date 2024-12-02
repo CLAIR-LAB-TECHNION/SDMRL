@@ -5,12 +5,12 @@ import gym
 import numpy as np
 import torch
 
-from cs236203.infrastructure import pytorch_util as ptu
-from cs236203.infrastructure import utils
-from cs236203.infrastructure.logger import Logger
-from cs236203.infrastructure.replay_buffer import ReplayBuffer
-from cs236203.policies.MLP_policy import MLPPolicySL
-from cs236203.policies.loaded_gaussian_policy import LoadedGaussianPolicy
+from cs236018.infrastructure import pytorch_util as ptu
+from cs236018.infrastructure import utils
+from cs236018.infrastructure.logger import Logger
+from cs236018.infrastructure.replay_buffer import ReplayBuffer
+from cs236018.policies.MLP_policy import MLPPolicySL
+from cs236018.policies.loaded_gaussian_policy import LoadedGaussianPolicy
 
 
 # how many rollouts to save as videos to tensorboard

@@ -9,8 +9,8 @@ import numpy as np
 import torch
 from torch import distributions
 
-from cs236203.infrastructure import pytorch_util as ptu
-from cs236203.policies.base_policy import BasePolicy
+from cs236018.infrastructure import pytorch_util as ptu
+from cs236018.policies.base_policy import BasePolicy
 
 
 def build_mlp(
