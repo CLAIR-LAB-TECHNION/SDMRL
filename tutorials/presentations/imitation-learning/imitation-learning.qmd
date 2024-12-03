@@ -192,9 +192,9 @@ Dagger is a different algorithm iterative one that try to be clever about P data
 
 ---
 
-## 
+## Imitation learning: what’s the problem?
 
-![](https://solportal.ibe-unesco.org/wp-content/uploads/2019/09/Imitation-1.jpg){.absolute}
+![](images/imitation-learning-problem.png){.absolute}
 
 ::: {.notes}
 Summery: By that we finish talking about imitation learning. I hope I convince you why we have to use different learning mechanisms rather than supervised learning, to learn decision making for task performing. Next week we’ll start discussing RL, which also take Inspiration from how humans learn but instead of learning by imitating an expert we are going to learn by applying actions on the environment and observing the results of it.
