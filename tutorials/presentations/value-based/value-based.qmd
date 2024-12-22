@@ -1,0 +1,270 @@
+---
+title: "Value Based Methods"
+author: "Itay Segev"
+format:
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    logo: https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAIR_logo.png?raw=true
+    css: style.css
+
+--- 
+
+## The Anatomy of a RL Algorithm
+
+![The anatomy of a reinforcement learning algorithm](https://www.researchgate.net/profile/Jonathan-Boron-2/publication/344589417/figure/fig2/AS:945255583080448@1602377901230/Structure-of-a-Reinforcement-Learning-Algorithm-Source-10.png)
+
+
+## Value-Based Methods 
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/two-approaches.jpg)
+
+## Model-Free - Policy Based
+
+
+![](images/pg.png)
+
+## Model-Free - Value Based
+
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut06_Value_based_anatomy.png?raw=true)
+
+
+
+## Value Functions
+
+```{=tex}
+\begin{align*}
+V^{\pi}(s) = \mathbb{E}_{\tau \sim \pi} \left[ R(\tau) \mid s_0 = s \right]
+\end{align*}
+```
+
+```{=tex}
+\begin{align*}
+Q^{\pi}(s,a) = \mathbb{E}_{\tau \sim \pi} \left[ R(\tau) \mid s_0 = s, a_0 = a \right]
+\end{align*}
+```
+
+```{=tex}
+\begin{align*}
+V^*(s) = \max_{\pi} \mathbb{E}_{\tau \sim \pi} \left[ R(\tau) \mid s_0 = s \right]
+\end{align*}
+```
+
+```{=tex}
+\begin{align*}
+Q^*(s,a) = \max_{\pi} \mathbb{E}_{\tau \sim \pi} \left[ R(\tau) \mid s_0 = s, a_0 = a \right]
+\end{align*}
+```
+
+
+## 
+
+There are two key connections between the value function and the action-value function that come up pretty often:
+
+```{=tex}
+\begin{align*}
+V^{\pi}(s) = \mathbb{E}_{a \sim \pi} \left[ Q^{\pi}(s,a) \right],
+\end{align*}
+```
+\
+
+
+```{=tex}
+\begin{align*}
+V^*(s) = \max_a Q^*(s,a).
+\end{align*}
+```
+
+
+## Bellman Equations
+
+The value of your starting point is the reward you expect to get from being there, plus the value of wherever you land next.
+
+\
+```{=tex}
+\begin{align*}
+V^{\pi}(s) &= \mathbb{E}_{a \sim \pi, \, s' \sim P} \left[ r(s,a) + \gamma V^{\pi}(s') \right], \\
+Q^{\pi}(s,a) &= \mathbb{E}_{s' \sim P} \left[ r(s,a) + \gamma \mathbb{E}_{a' \sim \pi} \left[ Q^{\pi}(s',a') \right] \right],
+\end{align*}
+```
+\
+
+```{=tex}
+\begin{align*}
+V^*(s) &= \max_a \mathbb{E}_{s' \sim P} \left[ r(s,a) + \gamma V^*(s') \right], \\
+Q^*(s,a) &= \mathbb{E}_{s' \sim P} \left[ r(s,a) + \gamma \max_{a'} Q^*(s',a') \right].
+\end{align*}
+```
+
+
+## Importance of Value Functions
+
+1. **Policy Evaluation**: They allow us to evaluate how good a policy is by estimating the expected return starting from a particular state or state-action pair.
+2. **Policy Improvement**: By comparing value functions under different policies, we can systematically improve the policy. This is the basis of methods like policy iteration and Q-learning.
+3. **Reducing Variance**: Using value functions, we can derive estimators with lower variance, which are more stable and reliable for learning.
+
+
+## Intuition
+
+-  Agent can move North, South, East or West.
+- The resulting transition is deterministic.
+- Reward of $+1$ is gained when exiting the maze. Otherwise all rewards are zero. Bumping into a wall terminates the game with a reward of zero.
+
+<img src="https://github.com/RL-VS/rlvs2021/blob/main/docs/class-material/rl_fundamentals/img/grid_raw.png?raw=1" width="200px"></img>
+
+
+## Intuition
+
+Let's consider the policy $\pi$ that always moves East.
+
+<img src="https://github.com/RL-VS/rlvs2021/blob/main/docs/class-material/rl_fundamentals/img/grid_policy.png?raw=1" width="200px"></img>
+
+## Intuition
+
+**Now let's take $\gamma=0.9$.**
+
+Without writing any equation, what is the value of the $(2,3)$ under this policy? What is the value of $(3,1)$?
+
+
+![](https://github.com/RL-VS/rlvs2021/blob/main/docs/class-material/rl_fundamentals/img/grid_vpi.png?raw=1){.absolute .fragment}
+
+
+## Intuition
+
+Let's draw the optimal value function.
+
+![](https://github.com/RL-VS/rlvs2021/blob/main/docs/class-material/rl_fundamentals/img/grid_vopt.png?raw=1){.absolute .fragment} 
+
+## Intuition
+
+What is $Q^*((1,2),a)$ for action $a$ in $\{N,S,E,W\}$?
+
+![](https://github.com/RL-VS/rlvs2021/blob/main/docs/class-material/rl_fundamentals/img/grid_vopt.png?raw=1){.absolute} 
+
+<br/> 
+<br/> 
+<br/> 
+<br/> 
+<br/>  
+<br/> 
+     
+
+::: {.fragment .fade-in} 
+$Q^*((1,2),N) = 0 + \gamma\times\gamma^2=\gamma^3$  
+$Q^*((1,2),S) = 0 + \gamma\times\gamma^4=\gamma^5$  
+$Q^*((1,2),E) = 0 + \gamma\times\gamma^4=\gamma^5$  
+$Q^*((1,2),W) = 0 + \gamma\times\gamma^3=\gamma^4$  
+:::
+
+
+## Intuition
+
+
+- Now suppose $(1,2)$ is a special slippery cell.
+- Going North has a $0.7$ probability of actually reaching $(1,3)$, but also a $0.2$ probability of staying in $(1,2)$ and a $0.1$ probability of ending in $(2,2)$.
+- Note that this changes the problem and the optimal expected return function $V^*$.
+
+
+Given this new problem, can you write $Q^*((1,2),N)$ as a function of $V^*(1,3)$, $V^*(1,2)$ and $V^*(2,2)$?
+
+
+## Intuition
+
+When we take action $N$ in $(1,2)$, there are 3 possible outcomes:
+
+- with probability $0.7$, reach $(1,3)$ and get reward $0$,
+- with probability $0.2$, reach $(1,2)$ and get reward $0$,
+- with probability $0.1$, reach $(2,2)$ and get reward $0$.
+
+So what we can expect to get from applying $N$ in $(1,2)$ is:  
+```{=tex}
+\begin{align*}
+    Q^*((1,2), N) &= 0.7 \times (0+\gamma V^*(1,3)) + 0.2\times(0+\gamma V^*(1,2)) + 0.1\times(0+\gamma V^*(2,2))\\
+    &= \gamma \left(0.7\times V^*(1,3) + 0.2\times V^*(1,2)+ 0.1\times V^*(2,2)\right)
+\end{align*}
+```
+
+## The Optimal Policy
+\
+
+-  Once we have $V^*$ , it’s easy to find the optimal policy (greedy with respect to the optimal evaluation function $V^*$.
+
+\
+
+-  It’s even easier if we have $Q^*$ because we just take the max without even having to do the one-step lookahead (i.e using the environment’s dynamics which we often do not have)
+
+$$
+\pi^*(s) = \arg \max_{a \in A} Q^*(s,a)
+$$
+
+
+
+## Value Iteration
+\
+
+![Value Iteration](https://lcalem.github.io/imgs/sutton/value_iteration.png)
+
+## Monte Carlo Learning
+\
+
+<img src='https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/MC-5.jpg'/>
+
+## Monte Carlo Learning
+
+
+
+- **Learning at the end of the episode:** The value function is updated only after the episode has concluded.
+- **Accurate but high variance:** Since Monte Carlo uses the actual return, the updates are accurate. However, the variance can be high due to the dependence on the entire episode.
+- **No bootstrapping:** Monte Carlo methods do not rely on previous estimates; they use the complete return for updates.
+
+
+## Temporal Difference Learning
+\
+
+![Temporal Difference Learning](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/TD-3.jpg)
+
+## Temporal Difference Learning
+
+- **Learning at each step:** The value function is updated after each interaction with the environment.
+- **Lower variance but biased:** TD methods can have lower variance because they bootstrap, using existing value estimates to update the value function. However, this introduces bias.
+- **Bootstrapping:** TD methods update the value function using the estimated return from the current state and action.
+
+## Monte Carlo Control
+\
+
+![On-policy first visit MC](https://lcalem.github.io/imgs/sutton/onpolicy_first_visit_mc.png)
+
+
+## Q-Learning
+\
+
+![Q-Learning Algorithm](https://lcalem.github.io/imgs/sutton/qlearning.png)
+
+
+## Bellman Operator 
+
+
+The Bellman operator $\mathcal{T}$ defines the recursive relationship for value functions in MDPs.
+
+\
+
+**For a given policy $\pi$:**
+```{=tex}
+\begin{align}
+
+(\mathcal{T}^{\pi} v)(s) = \sum_{a} \pi(a|s) \sum_{s', r} p(s', r|s, a) \left[ r + \gamma v(s') \right]
+
+\end{align}
+```
+
+**For the optimal value function $v^*$:**
+```{=tex}
+\begin{align}
+
+(\mathcal{T} v)(s) = \max_{a} \sum_{s', r} p(s', r|s, a) \left[ r + \gamma v(s') \right]
+
+\end{align}
+```
