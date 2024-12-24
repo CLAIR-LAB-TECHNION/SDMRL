@@ -1,0 +1,4 @@
+- source: value-based.qmd
+  quarto-pub:
+    - id: 54aaf768-78f5-40fe-9334-27b4a33e6af1
+      url: https://itaysegev.quarto.pub/value-based-methods
