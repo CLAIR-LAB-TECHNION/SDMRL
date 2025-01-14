@@ -1,0 +1,4 @@
+- source: actor_critic-tutorial.qmd
+  quarto-pub:
+    - id: faf171d1-fbd0-4ba3-b83f-ef5430258b13
+      url: https://itaysegev.quarto.pub/actor-critic
